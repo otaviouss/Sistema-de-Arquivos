@@ -1,0 +1,6 @@
+#ifndef ARQUIVOSIMULADO_H
+#define ARQUIVOSIMULADO_H
+
+
+
+#endif
