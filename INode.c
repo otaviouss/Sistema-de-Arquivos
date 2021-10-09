@@ -6,20 +6,33 @@
 #include "INode.h"
 
 void criarDiretorio(INode* inode, char* nome){
-    time_t rawtime;
+    // Variáveis necessárias para ver horario atual
+    time_t rawtime = time(NULL);
     struct tm *timeinfo = localtime(&rawtime);
 
-    inode = (INode*)malloc(sizeof(INode));
+    // Definindo o nome do novo diretório
     strcpy(inode->nome, nome);
+
+    // Definindo lista de arquivos do diretório como vazia
     inode->lista = NULL;
+
+    // Definindo tamanho inicial ocupado pelo diretório
     inode->tamanho = 0;
-    //data
-    inode->conteudo = null;
-    //inode->dataModificacao
-    //inode->dataUAcesso
-    //inode->horaCricacao;
-    //inode->horaModificacao
-    //inode->horaUAcesso
+    
+    // Definindo data atual
+    setData(&(inode->dataCriacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+                timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+    
+    // Definindo data da última modificação (Data atual)
+    setData(&(inode->dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+                timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+    
+    // Definindo data do último acesso (Data Atual)
+    setData(&(inode->dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+                timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+    
+    // Definindo conteúdo como vazio inicialmente
+    inode->conteudo = NULL;
 }
 
 void renomearDiretorio(INode* inode, char* nome){
@@ -27,7 +40,7 @@ void renomearDiretorio(INode* inode, char* nome){
 }
 
 void deletarDiretorio(INode* inode, char* nome){
-    if()
+
 }
 
 void listarDiretorio(INode* inode){
@@ -51,31 +64,5 @@ void listarArquivo(INode* inode){
 }
 
 void moverArquivo(INode* inode, char* caminho){
-
-}
-
-void getDataAtual(char data[11]){
-    time_t rawtime = time(NULL);
-    char result[5];
-    struct tm *timeinfo = localtime(&rawtime);
-
-    for(int i = 0; i < 11; i++){
-        data[i] = '\0';
-    }
-
-    sprintf(result, "%d", timeinfo->tm_mday);
-
-    strcpy(data, result);
-    data[2] = '/';
-
-    sprintf(result, "%d", timeinfo->tm_mon+1);
-    data[3] = result[0];
-    data[4] = result[1];
-    data[5] = '/';
-    sprintf(result, "%d", timeinfo->tm_year+1900);
-    data[6] = result[0];
-    data[7] = result[1];
-    data[8] = result[2];
-    data[9] = result[3];
 
 }

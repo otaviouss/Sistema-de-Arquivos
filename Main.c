@@ -1,16 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
 #include "Interface.h"
 #include "INode.h"
-#include <time.h>
+#include "Data.h"
 
 int main() {
 
     //menu();
-    //printf("%s", getDataAtual());
-//    time_t t = time(NULL);
-//    struct tm tm = *localtime(&t);
-//    printf("now: %d-%d-%0d %d:%d:%d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-
-    char data[11];
-    getDataAtual(data);
-    printf("%s", data);
+    
+    // Testando data e hora
+    time_t rawtime = time(NULL);
+    struct tm *timeinfo = localtime(&rawtime);
+    Data data;
+    char d;
+    setData(&data, timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+    getData(&data, &d);
 }

@@ -3,13 +3,12 @@
 
 #include <stdio.h>
 
+#include "Data.h"
+
 typedef struct INode {
-    char dataCriacao[11];
-    char horaCricacao[6];
-    char dataModificacao[11];
-    char horaModificacao[6];
-    char dataUAcesso[11];
-    char horaUAcesso[6];
+    Data dataCriacao;
+    Data dataModificacao;
+    Data dataAcesso;
     size_t tamanho; // Tamanho apenas dos arquivos
     char* nome; // Chave Primária Local - Pode ser nome do diretório ou nome do arquivo
     char* conteudo; // Conteúdo do Arquivo
@@ -33,7 +32,5 @@ void deletarArquivo(INode* inode, char* nome);
 void listarArquivo(INode* inode);
 
 void moverArquivo(INode* inode, char* caminho);
-
-void getDataAtual(char data[]);
 
 #endif
