@@ -5,19 +5,24 @@
 
 #include "Data.h"
 
+typedef struct INode SINode;
 typedef struct INode {
     Data dataCriacao;
     Data dataModificacao;
     Data dataAcesso;
+    int tipo;       // Marcador: 0 se diretório, 1 se arquivo
     size_t tamanho; // Tamanho apenas dos arquivos
-    char* nome; // Chave Primária Local - Pode ser nome do diretório ou nome do arquivo
+    char* nome;     // Chave Primária Local - Pode ser nome do diretório ou nome do arquivo
     char* conteudo; // Conteúdo do Arquivo
-    struct Inode* lista; // Lista de Arquivos no Diretorio
+    SINode* lista;  // Lista de Arquivos ou Diretórios no Diretorio atual
+    int quantidade; // Quantidades de items no Diretório atual (tamanho do vetor lista)
 } INode;
+
+void criarDiretorioInicial(INode* inode, char* nome);
 
 void criarDiretorio(INode* inode, char* nome);
 
-void renomearDiretorio(INode* inode, char* nome);
+void renomearDiretorioAtual(INode* inode, char* nome);
 
 void deletarDiretorio(INode* inode, char* nome);
 
@@ -25,12 +30,12 @@ void listarDiretorio(INode* inode);
 
 void criarArquivo(INode* inode, char* nome, char* conteudo);
 
-void renomearArquivo(INode* inode, char* nome);
+void renomearItem(INode* inode, char* nomeAtual, char* novoNome);
 
 void deletarArquivo(INode* inode, char* nome);
 
-void listarArquivo(INode* inode);
+void listarArquivo(INode* inode, char* nome);
 
-void moverArquivo(INode* inode, char* caminho);
+// void moverArquivo(INode* inode, char* caminho);
 
 #endif

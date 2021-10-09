@@ -12,7 +12,8 @@ void inicializarParticao(Particao *particao, size_t TamParticao, size_t TamBloco
     particao->ocupado = 0;
 
     // Cria diretório raiz (todos os demais diretórios e arquivos deverão estar dentro deste)
-    criarDiretorio(&inode, "/");
+    criarDiretorioInicial(&inode, "/");
+
     particao->raiz = inode;
 }
 

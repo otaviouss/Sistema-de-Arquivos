@@ -11,8 +11,8 @@ void setData(Data* data, int dia, int mes, int ano, int hora, int minuto, int se
     data->segundo = segundo;
 }
 
-void getData(Data* data, char* data_formatted) {
+void getData(Data* data) {
     // **data_formatted** servirá caso a gente queira retornar a data (Não sei se será necessário)
     // No momento, apenas escrevendo a data na tela:
-    printf("%d/%d/%d - %d:%d:%d", data->dia, data->mes, data->ano, data->hora, data->minuto, data->segundo);
+    printf("%d/%d/%d - %d:%d:%d\n", data->dia, data->mes, data->ano, data->hora, data->minuto, data->segundo);
 }
