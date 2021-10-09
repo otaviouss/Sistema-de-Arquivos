@@ -12,8 +12,10 @@ typedef struct {
     INode raiz;
 } Particao;
 
-void moverArquivo(Particao* particao, char* caminhoOrigem, char* caminhoDestino);
+void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminhoDestino);
 
 void percorrerCaminho(Particao* particao, char* caminho, INode* inode);
+
+void setTamanhoParticaoEBloco(Particao *particao, int TamParticao, int TamBloco);
 
 #endif
