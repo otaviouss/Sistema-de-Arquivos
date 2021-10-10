@@ -17,21 +17,25 @@ int main() {
 
     criarDiretorioInicial(&inode, "/");
 
-    // Sleep(2000);
+    Sleep(2000);
 
     criarArquivo(&inode, "Teste.txt", "Alguma coisa.");
 
     criarArquivo(&inode, "Teste2.txt", "Alguma coisa 2.");
 
-    // Sleep(2000);
+    Sleep(2000);
 
     renomearItem(&inode, "Teste.txt", "NovoNome.txt");
 
-    // deletarArquivo(&inode, "NovoNome.txt");
+    deletarArquivo(&inode, "NovoNome.txt");
 
-    // listarDiretorio(&inode);
+    listarDiretorio(&inode);
+
+    Sleep(1000);
 
     criarDiretorio(&inode, "Home");
+
+    Sleep(2000);
 
     renomearDiretorioAtual(&inode, "C:/");
 
