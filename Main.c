@@ -7,39 +7,74 @@
 #include "Interface.h"
 #include "INode.h"
 #include "Data.h"
+#include "Particao.h"
+
+void teste(char** str) {
+    (*str) = "Qualquer  coisa";
+
+    printf("T: %s\n", (*str));
+}
 
 int main() {
-
+    INode* inode, *in;
+    char* nome;
+    Particao particao;
     //menu();
+
+    teste(&nome);
+    printf("T: %s\n", nome);
     
-    // Testando INode
-    INode inode;
+    // Testando Particao
 
-    criarDiretorioInicial(&inode, "/");
+    /*char* c = "/Home/OC/TP3/arquivo.txt";
+    char* help = NULL;
+    int i, cont=0;
 
-    Sleep(2000);
+    for(i=0;i<strlen(c);i++) {
+        if(c[i]!='/') {
+            help = (char*) realloc(help, sizeof(char));
+            
+            help[cont] = c[i];
+            help[cont+1] = '\0';
 
-    criarArquivo(&inode, "Teste.txt", "Alguma coisa.");
+            cont++;
+        } else {
+            printf("%s\n", help);
+            cont = 0;
+            help = NULL;
+        }
+    }*/
+    
+    inicializarParticao(&particao, 1000, 20);
 
-    criarArquivo(&inode, "Teste2.txt", "Alguma coisa 2.");
+    criarDiretorio(&(particao.raiz), "Home");
 
-    Sleep(2000);
+    criarDiretorio(&particao.raiz, "ICC");
 
-    renomearItem(&inode, "Teste.txt", "NovoNome.txt");
+    listarDiretorio(&particao.raiz);
 
-    deletarArquivo(&inode, "NovoNome.txt");
+    percorrerCaminho(&particao, "/ICC/", &inode, &nome);
 
-    listarDiretorio(&inode);
+    // listarDiretorio(inode);
 
-    Sleep(1000);
+    criarDiretorio(inode, "SEINAO");
+    
+    criarDiretorio(inode, "IC");
+    
+    criarArquivo(inode, "Teste.txt", "Alguma coisa");
 
-    criarDiretorio(&inode, "Home");
+    listarDiretorio(inode);
 
-    Sleep(2000);
+    percorrerCaminho(&particao, "/ICC/Teste.txt", &in, &nome);
 
-    renomearDiretorioAtual(&inode, "C:/");
+    printf("\n\n");
 
-    listarDiretorio(&inode);
+    printf("A");
+    printf("%s", nome);
+
+    // listarDiretorio(inode);
+
+    listarArquivo(in, nome);
 
     return 0;
 

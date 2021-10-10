@@ -35,6 +35,10 @@ void renomearItem(INode* inode, char* nomeAtual, char* novoNome);
 
 void deletarArquivo(INode* inode, char* nome);
 
+void deletarArquivoINode(INode* inode);
+
 void listarArquivo(INode* inode, char* nome);
+
+void listarArquivoINode(INode* inode);
 
 #endif

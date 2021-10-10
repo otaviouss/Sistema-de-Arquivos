@@ -14,8 +14,8 @@ typedef struct {
 
 void inicializarParticao(Particao *particao, size_t TamParticao, size_t TamBloco);
 
-void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminhoDestino);
+void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** nome);
 
-void percorrerCaminho(Particao* particao, char* caminho, INode* inode);
+void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminhoDestino);
 
 #endif
