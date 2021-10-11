@@ -31,11 +31,11 @@ void menu() {
 void help() {
     printf("Comandos Disponiveis\n");
     printf("cd [caminho] [nome] - Criar Diretorio\n"); // /caminho/home diret
-    printf("rd [caminho] [nome novo] - Renomear Diretorio\n");
-    printf("ad [caminho] - Apagar Diretorio\n");
+    printf("rd [caminho] [nome atual] [nome novo] - Renomear Diretorio\n");
+    printf("ad [caminho] [nome] - Apagar Diretorio\n");
     printf("ld [caminho] - Listar Diretorio\n");
     printf("ca [caminho] [nome] - Criar Arquivo\n");
-    printf("ra [caminho] [nome novo] - Renomear Arquivo\n");
+    printf("ra [caminho] [nome atual] [nome novo] - Renomear Arquivo\n");
     printf("aa [caminho] [nome] - Apagar Arquivo\n");
     printf("la [caminho] [nome] - Listar Arquivo\n");
     printf("ma [caminho origem] [nome] [caminho destino] - Mover Arquivo\n");

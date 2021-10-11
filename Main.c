@@ -4,6 +4,7 @@
 #include <time.h>
 
 #include "Particao.h"
+#include "GerenciadorDeArquivos.h"
 
 int main() {
     char* nome;
@@ -11,7 +12,7 @@ int main() {
     //menu();
 
     // Testando Particao
-
+    /*
     inicializarParticao(&particao, 100, 20);
 
     criarDiretorioParticao(&particao, "/", "Teste");
@@ -41,6 +42,29 @@ int main() {
     mostrarDiretorioParticao(&particao, "/Home");
 
     mostrarArquivoParticao(&particao, "/Home", "NovoArquivo.txt");
+
+    criarDiretorioParticao(&particao, "/", "Crash");
+
+    deletarItemParticao(&particao, "/", "NovoArquivo2.txt");
+
+    criarDiretorioParticao(&particao, "/", "Crash");
+    
+    mostrarDiretorioParticao(&particao, "/");
+    */
+    char *n;
+
+    scanf("%s", nome);
+
+    printf("%s", nome);
+
+    lerArquivo("test.txt", &n);
+
+    Instrucao* inst;
+    lerArquivoInstrucoes("test2.txt", &inst);
+
+    printf("OI");
+
+    printf("D: %s %s", inst[0].comando, inst[0].caminho1 );
 
     return 0;
 

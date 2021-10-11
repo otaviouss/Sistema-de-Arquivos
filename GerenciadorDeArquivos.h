@@ -1,14 +1,16 @@
 #ifndef GERENCIADOR_H
 #define GERENCIADOR_H
 
-#include<stdio.h>
-
-#include "Particao.h"
-
 typedef struct {
-    Particao particao;
-} GerenciadorDeArquivos;
+    char comando[3];
+    char caminho1[1000];
+    char caminho2[1000];
+    char nome1[101];
+    char nome2[101];
+} Instrucao;
 
-void lerArquivo(GerenciadorDeArquivos* gArquivo, char* nome, char* caminho);
+void lerArquivoInstrucoes(char* nome, Instrucao** inst);
+
+void lerArquivo(char* nome, char** descricao);
 
 #endif

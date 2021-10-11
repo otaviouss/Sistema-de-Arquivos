@@ -100,7 +100,7 @@ void criarDiretorioParticao(Particao* particao, char* caminho, char* nome) {
 
     tam = sizeof(inode);
 
-    tam = ceil(tam / particao->bloco);
+    tam = ceil((float) tam / (float) particao->bloco);
     tam *= particao->bloco;
 
     // Testando se estourou o espaço livre.
@@ -126,7 +126,7 @@ void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* c
 
     tam = sizeof(inode);
 
-    tam = ceil(tam / particao->bloco);
+    tam = ceil((float) tam / (float) particao->bloco);
     tam *= particao->bloco;
 
     // Testando se estourou o espaço livre.
@@ -152,7 +152,7 @@ void deletarItemParticao(Particao* particao, char* caminho, char* nome) {
 
     deletarItem(inode, nome);
 
-    tam = ceil(tam / particao->bloco);
+    tam = ceil((float) tam / (float) particao->bloco);
     tam *= particao->bloco;
 
     particao->ocupado -= tam;
