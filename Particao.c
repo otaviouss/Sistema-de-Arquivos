@@ -33,26 +33,16 @@ void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** n
     if(caminho[strlen(caminho)-1] != '/') {
         cam[strlen(caminho)] = '/';
         cam[strlen(caminho)+1] = '\0';
-
-        printf("C: %s\n", cam);
     }
-
-    printf("OI\n");
 
     if(caminho[0] != '/') {
         printf("Diretorio raiz é /\n");
         return;
     }
 
-    printf("OIs\n");
-
     ajudante = (INode*) malloc(sizeof(INode));
 
-    printf("OIss\n");
-
     *ajudante = particao->raiz;
-
-    printf("OI\n");
 
     for(i=1;i<strlen(cam);i++) {
         if(cam[i]!='/') {
@@ -78,22 +68,21 @@ void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** n
     else                    printf("Arquivo %s encontrado!\n", *nome);
 }
 
-// /Home/Teste.txt -> /Home/ICC
-void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminhoDestino) {
+void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminhoDestino, char* nome) {
     INode *iNodeOrigem, *iNodeDestino;
-    char *nomeOrigem, *conteudo;
+    char *n, *conteudo;
     
-    nomeOrigem = (char*) malloc(100*sizeof(char));
+    n = (char*) malloc(100*sizeof(char));
     conteudo = (char*) malloc(1000*sizeof(char));
     
-    percorrerCaminho(particao, caminhoDestino, &iNodeDestino, &nomeOrigem);
-    percorrerCaminho(particao, caminhoOrigem, &iNodeOrigem, &nomeOrigem);
+    percorrerCaminho(particao, caminhoDestino, &iNodeDestino, &n);
+    percorrerCaminho(particao, caminhoOrigem, &iNodeOrigem, &n);
 
-    RetornaConteudoArquivo(iNodeOrigem, nomeOrigem, &conteudo);
+    RetornaConteudoArquivo(iNodeOrigem, nome, &conteudo);
 
-    criarArquivo(iNodeDestino, nomeOrigem, conteudo);
+    criarArquivo(iNodeDestino, nome, conteudo);
 
-    deletarItem(iNodeOrigem, nomeOrigem);
+    deletarItem(iNodeOrigem, nome);
 
     printf("Arquivo Movido com Sucesso!\n");
 }
@@ -105,11 +94,7 @@ void criarDiretorioParticao(Particao* particao, char* caminho, char* nome) {
     
     n = (char*) malloc(100*sizeof(char));
 
-    printf("OI\n");
-
     percorrerCaminho(particao, caminho, &inode, &n);
-
-    printf("OI2\n");
 
     criarDiretorio(inode, nome);
 
@@ -135,15 +120,9 @@ void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* c
     
     n = (char*) malloc(100*sizeof(char));
 
-    printf("OI\n");
-
     percorrerCaminho(particao, caminho, &inode, &n);
 
-    printf("OI2\n");
-
     criarArquivo(inode, nome, conteudo);
-
-    listarDiretorio(inode);
 
     tam = sizeof(inode);
 

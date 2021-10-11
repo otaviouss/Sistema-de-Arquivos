@@ -4,10 +4,8 @@
 #include <time.h>
 
 #include "Particao.h"
-#include "INode.h"
 
 int main() {
-    INode* inode;
     char* nome;
     Particao particao;
     //menu();
@@ -24,21 +22,25 @@ int main() {
     
     mostrarDiretorioParticao(&particao, "/");
 
-    printf("A\n");
-
     criarArquivoParticao(&particao, "/Teste", "Haha.txt", "Que graça hein");
 
-    printf("\n\nAqui\n\n");
-
     mostrarDiretorioParticao(&particao, "/Teste");
-
-    printf("B\n");
 
     criarDiretorioParticao(&particao, "/Teste", "Dirrrr");
 
-    printf("C\n");
-
     mostrarDiretorioParticao(&particao, "/Teste");
+
+    renomearItemParticao(&particao, "/", "Teste", "Home");
+
+    mostrarDiretorioParticao(&particao, "/");
+
+    moverArquivoParticao(&particao, "/", "/Home", "NovoArquivo.txt");
+
+    mostrarDiretorioParticao(&particao, "/");
+
+    mostrarDiretorioParticao(&particao, "/Home");
+
+    mostrarArquivoParticao(&particao, "/Home", "NovoArquivo.txt");
 
     return 0;
 

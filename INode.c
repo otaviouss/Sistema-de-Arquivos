@@ -134,8 +134,6 @@ void listarDiretorio(INode* inode){
     // Variáveis necessárias para ver horario atual
     time_t rawtime = time(NULL);
     struct tm *timeinfo = localtime(&rawtime);
-
-    printf("A\n");
     
     // Definindo data do último acesso (Data Atual)
     setData(&(inode->dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
