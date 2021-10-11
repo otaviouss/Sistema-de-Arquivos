@@ -9,42 +9,16 @@
 #include "Data.h"
 #include "Particao.h"
 
-void teste(char** str) {
-    (*str) = "Qualquer  coisa";
-
-    printf("T: %s\n", (*str));
-}
-
 int main() {
-    INode* inode, *in;
+    INode* inode;
     char* nome;
     Particao particao;
     //menu();
 
-    teste(&nome);
-    printf("T: %s\n", nome);
-    
     // Testando Particao
-
-    /*char* c = "/Home/OC/TP3/arquivo.txt";
-    char* help = NULL;
-    int i, cont=0;
-
-    for(i=0;i<strlen(c);i++) {
-        if(c[i]!='/') {
-            help = (char*) realloc(help, sizeof(char));
-            
-            help[cont] = c[i];
-            help[cont+1] = '\0';
-
-            cont++;
-        } else {
-            printf("%s\n", help);
-            cont = 0;
-            help = NULL;
-        }
-    }*/
     
+    nome = (char*) malloc(100*sizeof(char));
+
     inicializarParticao(&particao, 1000, 20);
 
     criarDiretorio(&(particao.raiz), "Home");
@@ -55,7 +29,9 @@ int main() {
 
     percorrerCaminho(&particao, "/ICC/", &inode, &nome);
 
-    // listarDiretorio(inode);
+    listarArquivo(inode, "Teste.txt"); // Tentando listar arquivo inexistente
+
+    listarDiretorio(inode);
 
     criarDiretorio(inode, "SEINAO");
     
@@ -63,18 +39,29 @@ int main() {
     
     criarArquivo(inode, "Teste.txt", "Alguma coisa");
 
+    percorrerCaminho(&particao, "/Home/", &inode, &nome);
+
+    criarDiretorio(inode, "SO");
+    
+    criarArquivo(inode, "Teste2.txt", "Alguma coisa2");
+
     listarDiretorio(inode);
 
-    percorrerCaminho(&particao, "/ICC/Teste.txt", &in, &nome);
+    percorrerCaminho(&particao, "/ICC/Teste.txt", &inode, &nome);
 
-    printf("\n\n");
+    listarDiretorio(inode);
 
-    printf("A");
-    printf("%s", nome);
+    printf("Listando...\n");
+    listarArquivo(inode, nome);
+    printf("....\n");
 
-    // listarDiretorio(inode);
+    moverArquivoParticao(&particao, "/ICC/Teste.txt", "/Home/");
 
-    listarArquivo(in, nome);
+    percorrerCaminho(&particao, "/Home/Teste.txt", &inode, &nome);
+
+    printf("Listando...\n");
+    listarArquivo(inode, nome);
+    printf("....\n");
 
     return 0;
 

@@ -16,8 +16,8 @@ void criarDiretorioInicial(INode* inode, char* nome) {
     // Definindo o nome do novo diretório
     inode->nome = nome;
 
-    // Definindo lista de arquivos do diretório como vazia
-    inode->lista = NULL;
+    // Inicializando lista de arquivos do diretório
+    FLVazia(inode);
 
     // Definindo tamanho inicial ocupado pelo diretório
     inode->tamanho = 0;
@@ -40,8 +40,6 @@ void criarDiretorioInicial(INode* inode, char* nome) {
     // Definindo diretório como vazio
     inode->quantidade = 0;
 
-    // Definindo lixeira como vazia
-    inode->lixeira = 0;
 }
 
 void criarDiretorio(INode* inode, char* nome) {
@@ -49,48 +47,48 @@ void criarDiretorio(INode* inode, char* nome) {
     time_t rawtime = time(NULL);
     struct tm *timeinfo = localtime(&rawtime);
 
-    // Alocar espaço para novo arquivo
-    inode->lista = (INode*) realloc(inode->lista, sizeof(INode));
+    // Criando novo inode do diretório
+    INode in;
 
     // Definindo como Diretório
-    inode->lista[inode->quantidade].tipo = 0;
+    in.tipo = 0;
 
     // Definindo o nome do novo diretório
-    inode->lista[inode->quantidade].nome = nome;
+    in.nome = nome;
 
-    // Definindo lista de arquivos do diretório como vazia
-    inode->lista[inode->quantidade].lista = NULL;
+    // Inicializando lista de arquivos do diretório
+    FLVazia(&in);
 
     // Definindo tamanho inicial ocupado pelo diretório
-    inode->lista[inode->quantidade].tamanho = 0;
+    in.tamanho = 0;
     
     // Definindo data atual
-    setData(&(inode->lista[inode->quantidade].dataCriacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+    setData(&(in.dataCriacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     
     // Definindo data da última modificação (Data atual)
-    setData(&(inode->lista[inode->quantidade].dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+    setData(&(in.dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     
     // Definindo data do último acesso (Data Atual)
-    setData(&(inode->lista[inode->quantidade].dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+    setData(&(in.dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     
     // Definindo conteúdo como vazio (Pois é um diretório)
-    inode->lista[inode->quantidade].conteudo = NULL;
+    in.conteudo = NULL;
 
     // Definindo diretório como vazio
-    inode->lista[inode->quantidade].quantidade = 0;
+    in.quantidade = 0;
 
-    // Definindo lixeira como vazia
-    inode->lista[inode->quantidade].lixeira = 0;
+    // Inserindo novo diretório no diretório atual
+    InsereINode(inode, in);
 
     // Atualiza Quantidade de items no Diretório atual
     inode->quantidade++;
 
 }
 
-void renomearDiretorioAtual(INode* inode, char* nome){
+void renomearDiretorioAtual(INode* inode, char* nome) {
     // Variáveis necessárias para ver horario atual
     time_t rawtime = time(NULL);
     struct tm *timeinfo = localtime(&rawtime);
@@ -104,14 +102,14 @@ void renomearDiretorioAtual(INode* inode, char* nome){
     printf("Diretorio Atual Renomeado com Sucesso!\n");
 }
 
-void deletarDiretorio(INode* inode, char* nome){
+void deletarItem(INode* inode, char* nome) {
     int i;
     
     // Variáveis necessárias para ver horario atual
     time_t rawtime = time(NULL);
     struct tm *timeinfo = localtime(&rawtime);
 
-    if(inode->lista == NULL) {
+    if(LehVazia(inode)) {
         printf("Diretorio Vazio!\n");
         return;
     }
@@ -120,22 +118,13 @@ void deletarDiretorio(INode* inode, char* nome){
     setData(&(inode->dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
-    for(i=0;i<inode->quantidade; i++) {
-        if(strcmp(inode->lista[i].nome, nome) == 0) {
-            inode->lista[i].tipo = -1;
+    RetiraINode(inode, nome);
 
-            // Adicionando item na lixeira
-            inode->lixeira++;
+    // Definindo data da última modificação (Data atual)
+    setData(&(inode->dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+        timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
-            // Definindo data da última modificação (Data atual)
-            setData(&(inode->dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
-                timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-
-            printf("Arquivo Deletado com Sucesso!\n");
-            return;
-        }
-    }
-
+    printf("Arquivo Deletado com Sucesso!\n");
     
 }
 
@@ -161,10 +150,7 @@ void listarDiretorio(INode* inode){
     printf("Data de Acesso: ");
     getData(&inode->dataAcesso);
 
-    for(i=0;i<inode->quantidade; i++) {
-        if(inode->lista[i].tipo == 0)   printf("  Diretorio %s\n", inode->lista[i].nome);
-        else if(inode->lista[i].tipo == 1) printf("  Arquivo %s\n", inode->lista[i].nome);
-    }
+    ImprimeLista(inode);
 
 }
 
@@ -173,38 +159,41 @@ void criarArquivo(INode* inode, char* nome, char* conteudo){
     time_t rawtime = time(NULL);
     struct tm *timeinfo = localtime(&rawtime);
 
-    // Alocar espaço para novo arquivo
-    inode->lista = (INode*) realloc(inode->lista, sizeof(INode));
+    // Criando novo inode do arquivo
+    INode in;
     
     // Definindo como Arquivo
-    inode->lista[inode->quantidade].tipo = 1;
+    in.tipo = 1;
 
     // Definindo o nome do novo arquivo
-    inode->lista[inode->quantidade].nome = nome;
+    in.nome = nome;
 
     // Definindo lista de arquivos como vazia (pois um arqquivo não utiliza)
-    inode->lista[inode->quantidade].lista = NULL;
+    FLVazia(&in);
     
     // Definindo data atual
-    setData(&(inode->lista[inode->quantidade].dataCriacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+    setData(&(in.dataCriacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     
     // Definindo data da última modificação (Data atual)
-    setData(&(inode->lista[inode->quantidade].dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+    setData(&(in.dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     
     // Definindo data do último acesso (Data Atual)
-    setData(&(inode->lista[inode->quantidade].dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+    setData(&(in.dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     
     // Definindo conteúdo do arquivo
-    inode->lista[inode->quantidade].conteudo = conteudo;
+    in.conteudo = conteudo;
 
     // 0, pois representa quantidade de items em um diretório (Não é o caso)
-    inode->lista[inode->quantidade].quantidade = 0;
+    in.quantidade = 0;
 
     // Definindo tamanho inicial ocupado pelo arquivo
-    inode->lista[inode->quantidade].tamanho = sizeof(inode);
+    in.tamanho = sizeof(in);
+
+    // Inserindo INode do arquivo no diretório
+    InsereINode(inode, in);
 
     // Definindo data da última modificação (Data atual)
     setData(&(inode->dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
@@ -217,8 +206,6 @@ void criarArquivo(INode* inode, char* nome, char* conteudo){
     // Atualiza Quantidade de items no Diretório atual
     inode->quantidade++;
 
-    // Definindo lixeira como vazia (Serve apenas para diretório)
-    inode->lixeira = 0;
 }
 
 void renomearItem(INode* inode, char* nomeAtual, char* novoNome) {
@@ -227,7 +214,7 @@ void renomearItem(INode* inode, char* nomeAtual, char* novoNome) {
     time_t rawtime = time(NULL);
     struct tm *timeinfo = localtime(&rawtime);
 
-    if(inode->lista == NULL || inode->quantidade==inode->lixeira) {
+    if(LehVazia(inode)) {
         printf("Diretorio Vazio!\n");
         return;
     }
@@ -236,20 +223,17 @@ void renomearItem(INode* inode, char* nomeAtual, char* novoNome) {
     setData(&(inode->dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     
-    for(i=0;i<inode->quantidade; i++) {
-        if(strcmp(inode->lista[i].nome, nomeAtual) == 0) {
-            inode->lista[i].nome = novoNome;
-            
-            // Definindo data da última modificação (Data atual)
-            setData(&(inode->dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
-                        timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-        }
-    }
+    RenomearINode(inode, nomeAtual, novoNome);
+
+    // Definindo data da última modificação (Data atual)
+    setData(&(inode->dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+                timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
     printf("Arquivo Renomeado com Sucesso!\n");
 
 }
 
+/*
 void deletarArquivo(INode* inode, char* nome){
     int i;
 
@@ -257,7 +241,7 @@ void deletarArquivo(INode* inode, char* nome){
     time_t rawtime = time(NULL);
     struct tm *timeinfo = localtime(&rawtime);
 
-    if(inode->lista == NULL || inode->quantidade==inode->lixeira) {
+    if(LehVazia(&inode->lista)) {
         printf("Diretorio Atual esta Vazio!\n");
         return;
     }
@@ -281,29 +265,7 @@ void deletarArquivo(INode* inode, char* nome){
         }
     }
    
-}
-
-void deletarArquivoINode(INode* inode) {
-    int i;
-
-    // Variáveis necessárias para ver horario atual
-    time_t rawtime = time(NULL);
-    struct tm *timeinfo = localtime(&rawtime);
-
-    // Definindo data do último acesso (Data Atual)
-    setData(&(inode->dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
-                timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-    
-    // Definindo data da última modificação (Data Atual)
-    setData(&(inode->dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
-                timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-    
-    inode->tipo = -1;
-
-    // Adicionando item na lixeira
-    inode->lixeira++;
-    
-}
+}*/
 
 // Apresenta conteúdo dentro de um arquivo com o nome
 void listarArquivo(INode* inode, char* nome) {
@@ -317,17 +279,8 @@ void listarArquivo(INode* inode, char* nome) {
     setData(&(inode->dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
-    for(i=0;i<inode->quantidade; i++) {
+    ImprimeArquivo(inode, nome);
 
-        if(strcmp(inode->lista[i].nome, nome) == 0) {
-            // Definindo data do último acesso (Data Atual)
-            setData(&(inode->lista[i].dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
-                        timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-            
-            printf("Conteudo no Arquivo %s\n", inode->lista[i].nome);
-            printf("%s\n", inode->lista[i].conteudo);
-        }
-    }
 }
 
 // Apresenta conteúdo dentro de um arquivo
@@ -345,5 +298,140 @@ void listarArquivoINode(INode* inode) {
     
     printf("Conteudo no Arquivo %s\n", inode->nome);
     printf("%s\n", inode->conteudo);
-        
+}
+
+// Operações para lidar com a lista de arquivos dentro do diretório
+
+void FLVazia(INode* lista) {
+    lista->pPrimeiro = (Apontador) malloc(sizeof(Celula));
+    // lista->pUltimo = lista->pPrimeiro;
+    lista->pPrimeiro->pProx = NULL;
+}
+
+int LehVazia(INode* lista) {
+    return(lista->pPrimeiro->pProx == NULL);
+}
+
+void InsereINode(INode* lista, INode inode) {
+    Apontador pAux;
+
+    pAux = lista->pPrimeiro;
+    while(pAux->pProx != NULL) {
+        pAux = pAux->pProx;
+    }
+    pAux->pProx = (Apontador) malloc(sizeof(Celula));
+    pAux = pAux->pProx;
+    pAux->inode = inode;
+    pAux->pProx = NULL;
+}
+
+int RetiraINode(INode* lista, char* nome) {
+    Apontador pAux, pDel;
+    
+    if(LehVazia(lista)) return -1;
+
+    pAux = lista->pPrimeiro;
+    while(pAux->pProx != NULL) {
+        if(strcmp(pAux->pProx->inode.nome, nome) == 0) {
+            pDel = pAux->pProx;
+            pAux->pProx = pAux->pProx->pProx;
+            free(pDel);
+            return 1;
+        }
+        pAux = pAux->pProx;
+    }
+    return 0;
+}
+
+int BuscarINode(INode* lista, char* nome, INode* inode) {
+    Apontador pAux;
+    
+    if(LehVazia(lista)) return -1;
+
+    pAux = lista->pPrimeiro;
+    while(pAux->pProx != NULL) {
+        if(strcmp(pAux->pProx->inode.nome, nome) == 0) {
+            (*inode) = pAux->pProx->inode;
+            return 1;
+        }
+        pAux = pAux->pProx;
+    }
+    return 0;
+}
+
+int RenomearINode(INode* lista, char* nomeAntigo, char* nomeNovo) {
+    Apontador pAux;
+
+    // Variáveis necessárias para ver horario atual
+    time_t rawtime = time(NULL);
+    struct tm *timeinfo = localtime(&rawtime);
+
+    //if(LehVazia(lista)) return -1;
+
+    pAux = lista->pPrimeiro->pProx;
+    while(pAux != NULL) {
+        if(strcmp(pAux->inode.nome, nomeAntigo) == 0) {
+            setData(&(pAux->inode.dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+                        timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+            pAux->inode.nome = nomeNovo;
+            return 1;
+        }
+        pAux = pAux->pProx;
+    }
+    return 0;
+}
+
+int ImprimeArquivo(INode* lista, char* nome) {
+    Apontador pAux;
+
+    // Variáveis necessárias para ver horario atual
+    time_t rawtime = time(NULL);
+    struct tm *timeinfo = localtime(&rawtime);
+
+    if(LehVazia(lista)) return -1;
+    
+    pAux = lista->pPrimeiro->pProx;
+    while(pAux != NULL) {
+        if(strcmp(pAux->inode.nome, nome) == 0) {
+            setData(&(pAux->inode.dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+                        timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+            printf("Conteudo no Arquivo %s\n", pAux->inode.nome);
+            printf("%s\n", pAux->inode.conteudo);
+            return 1;
+        }
+        pAux = pAux->pProx;
+    }
+    return 0;
+}
+
+int RetornaConteudoArquivo(INode* lista, char* nome, char** conteudo) {
+    Apontador pAux;
+
+    // Variáveis necessárias para ver horario atual
+    time_t rawtime = time(NULL);
+    struct tm *timeinfo = localtime(&rawtime);
+
+    if(LehVazia(lista)) return -1;
+    
+    pAux = lista->pPrimeiro->pProx;
+    while(pAux != NULL) {
+        if(strcmp(pAux->inode.nome, nome) == 0) {
+            setData(&(pAux->inode.dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
+                        timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
+            strcpy((*conteudo), pAux->inode.conteudo);
+            return 1;
+        }
+        pAux = pAux->pProx;
+    }
+    return 0;
+}
+
+void ImprimeLista(INode* lista) {
+    Apontador pAux;
+    pAux = lista->pPrimeiro->pProx;
+    while(pAux != NULL) {
+        if(pAux->inode.tipo == 0)      printf("  Diretorio %s\n", pAux->inode.nome);
+        else if(pAux->inode.tipo == 1) printf("  Arquivo %s\n", pAux->inode.nome);
+        pAux = pAux->pProx;
+    }
 }

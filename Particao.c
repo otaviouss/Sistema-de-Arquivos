@@ -26,37 +26,25 @@ void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** n
     char help[100];
     int flag;
 
-    // strcpy(cam, caminho);
-    
-    // cam[strlen(caminho)] = '/';
-    // cam[strlen(caminho)+1] = '\0';
-
-    // printf("C: %s\n", cam);
-
     if(caminho[0] != '/') {
         printf("Diretorio raiz é /\n");
         return;
     }
 
-    ajudante = &particao->raiz;
+    ajudante = (INode*) malloc(sizeof(INode));
+
+    *ajudante = particao->raiz;
 
     for(i=1;i<strlen(caminho);i++) {
         if(caminho[i]!='/') {
             help[cont] = caminho[i];
             help[cont+1] = '\0';
             cont++;
-            (*nome) = help;
+            strcpy((*nome), help);
         } else {
-            flag = 0;
-            for(j = 0; j<ajudante->quantidade; j++) {
-                if(strcmp(ajudante->lista[j].nome, help) == 0) {
-                    ajudante = &ajudante->lista[j];
-                    flag = 1;
-                    break;
-                }
-            }
+            flag = BuscarINode(ajudante, help, ajudante);
             
-            if(flag==0) {
+            if(flag==0 || flag==-1) {
                 printf("Diretorio %s nao encontrado.\n", help);
                 return;
             }
@@ -67,26 +55,25 @@ void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** n
 
     (*inode) = ajudante;
 
-    
-
-    printf("N: %s\n", (*nome));
-
-    // (*nome) = "Valor";
-
-    printf("N: %s\n", (*nome));
-
-    printf("Diretorio encontrado!\n");
+    printf("Diretorio ou Arquivo %s encontrado!\n", *nome);
 }
 
 // /Home/Teste.txt -> /Home/ICC
 void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminhoDestino) {
     INode *iNodeOrigem, *iNodeDestino;
-    //char** nome;
+    char *nomeOrigem, *conteudo;
+    
+    nomeOrigem = (char*) malloc(100*sizeof(char));
+    conteudo = (char*) malloc(1000*sizeof(char));
+    
+    percorrerCaminho(particao, caminhoDestino, &iNodeDestino, &nomeOrigem);
+    percorrerCaminho(particao, caminhoOrigem, &iNodeOrigem, &nomeOrigem);
 
-    //percorrerCaminho(particao, caminhoOrigem, &iNodeOrigem, &nome);
-    //percorrerCaminho(particao, caminhoDestino, &iNodeDestino, &nome);
+    RetornaConteudoArquivo(iNodeOrigem, nomeOrigem, &conteudo);
 
-    criarArquivo(iNodeDestino, iNodeOrigem->nome, iNodeOrigem->conteudo);
+    criarArquivo(iNodeDestino, nomeOrigem, conteudo);
 
+    deletarItem(iNodeOrigem, nomeOrigem);
 
+    printf("Arquivo Movido com Sucesso!\n");
 }
