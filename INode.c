@@ -345,17 +345,20 @@ int RetiraINode(INode* lista, char* nome) {
 
 int BuscarINode(INode* lista, char* nome, INode* inode) {
     Apontador pAux;
-    
     if(LehVazia(lista)) return -1;
 
     pAux = lista->pPrimeiro;
+
     while(pAux->pProx != NULL) {
+
         if(strcmp(pAux->pProx->inode.nome, nome) == 0) {
             (*inode) = pAux->pProx->inode;
+
             return 1;
         }
         pAux = pAux->pProx;
     }
+
     return 0;
 }
 

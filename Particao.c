@@ -90,22 +90,25 @@ void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminho
 void criarDiretorioParticao(Particao* particao, char* caminho, char* nome) {
     INode* inode;
     char* n;
+    char *nome2 = (char*) malloc(sizeof(nome));
     size_t tam;
+
+    strcpy(nome2, nome);
     
     n = (char*) malloc(100*sizeof(char));
 
     percorrerCaminho(particao, caminho, &inode, &n);
 
-    criarDiretorio(inode, nome);
+    criarDiretorio(inode, nome2);
 
     tam = sizeof(inode);
 
-    tam = ceil((float) tam / (float) particao->bloco);
+    tam = (size_t)((float) tam / (float) particao->bloco);
     tam *= particao->bloco;
 
     // Testando se estourou o espaço livre.
     if(tam+particao->ocupado > particao->particao) {
-        deletarItem(inode, nome);
+        deletarItem(inode, nome2);
         printf("Particao Cheia. Impossivel criar o diretorio.");
         return;
     }
@@ -117,21 +120,27 @@ void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* c
     INode* inode;
     char* n;
     size_t tam;
+
+    char *nome2 = (char*) malloc(sizeof(nome));
+    char *conteudo2 = (char*) malloc(sizeof(conteudo));
+
+    strcpy(nome2, nome);
+    strcpy(conteudo2, conteudo);
     
     n = (char*) malloc(100*sizeof(char));
 
     percorrerCaminho(particao, caminho, &inode, &n);
 
-    criarArquivo(inode, nome, conteudo);
+    criarArquivo(inode, nome2, conteudo2);
 
     tam = sizeof(inode);
 
-    tam = ceil((float) tam / (float) particao->bloco);
+    tam = (size_t)((float) tam / (float) particao->bloco);
     tam *= particao->bloco;
 
     // Testando se estourou o espaço livre.
     if(tam+particao->ocupado > particao->particao) {
-        deletarItem(inode, nome);
+        deletarItem(inode, nome2);
         printf("Particao Cheia. Impossivel inserir o arquivo.");
         return;
     }
@@ -152,7 +161,7 @@ void deletarItemParticao(Particao* particao, char* caminho, char* nome) {
 
     deletarItem(inode, nome);
 
-    tam = ceil((float) tam / (float) particao->bloco);
+    tam = (size_t )((float) tam / (float) particao->bloco);
     tam *= particao->bloco;
 
     particao->ocupado -= tam;
