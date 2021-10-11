@@ -22,13 +22,13 @@ void inicializarParticao(Particao *particao, size_t TamParticao, size_t TamBloco
 
 // Exemplo de caminho: /DIR1/DIR2/DIR3/teste.txt
 void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** nome) {
+    char cam[100];
     INode* ajudante;
     int i = 0, j = 0, cont = 0;
     char help[100];
-    char *cam;
+
     int flag;
 
-    cam = (char*) malloc(sizeof(caminho)+1);
     strcpy(cam, caminho);
     if(caminho[strlen(caminho)-1] != '/') {
         cam[strlen(caminho)] = '/';
@@ -118,7 +118,7 @@ void criarDiretorioParticao(Particao* particao, char* caminho, char* nome) {
 
 void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* conteudo) {
     INode* inode;
-    char* n;
+    char* n = (char*) malloc(100*sizeof(char));
     size_t tam;
 
     char *nome2 = (char*) malloc(sizeof(nome));
@@ -126,8 +126,6 @@ void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* c
 
     strcpy(nome2, nome);
     strcpy(conteudo2, conteudo);
-    
-    n = (char*) malloc(100*sizeof(char));
 
     percorrerCaminho(particao, caminho, &inode, &n);
 

@@ -138,14 +138,16 @@ void help() {
 
 void execucaoAutomatica() {
     Particao particao;
-    char nome, *descricao;
+    char *nome, *descricao;
     Instrucao *inst;
     size_t n, i;
 
     printf("Nome do Arquivo (Com extensao): ");
     scanf("%s", nome);
 
-    lerArquivoInstrucoes(&nome, &inst);
+    nome[strlen(nome)-1] = '\0';
+
+    //lerArquivoInstrucoes(nome, &inst);
 
     n = sizeof(inst)/sizeof(inst[0]);
 
