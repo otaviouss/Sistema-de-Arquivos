@@ -2,10 +2,10 @@
 #define GERENCIADOR_H
 
 #include<stdio.h>
+
 #include "Particao.h"
 
 typedef struct {
-    char* caminhoAtual;
     Particao particao;
 } GerenciadorDeArquivos;
 

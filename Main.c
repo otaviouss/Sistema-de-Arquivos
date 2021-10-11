@@ -2,12 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <Windows.h>
 
-#include "Interface.h"
-#include "INode.h"
-#include "Data.h"
 #include "Particao.h"
+#include "INode.h"
 
 int main() {
     INode* inode;
@@ -16,52 +13,32 @@ int main() {
     //menu();
 
     // Testando Particao
+
+    inicializarParticao(&particao, 100, 20);
+
+    criarDiretorioParticao(&particao, "/", "Teste");
+
+    criarArquivoParticao(&particao, "/", "NovoArquivo.txt", "Conteudo.");
+
+    criarArquivoParticao(&particao, "/", "NovoArquivo2.txt", "Conteudo2.");
     
-    nome = (char*) malloc(100*sizeof(char));
+    mostrarDiretorioParticao(&particao, "/");
 
-    inicializarParticao(&particao, 1000, 20);
+    printf("A\n");
 
-    criarDiretorio(&(particao.raiz), "Home");
+    criarArquivoParticao(&particao, "/Teste", "Haha.txt", "Que graça hein");
 
-    criarDiretorio(&particao.raiz, "ICC");
+    printf("\n\nAqui\n\n");
 
-    listarDiretorio(&particao.raiz);
+    mostrarDiretorioParticao(&particao, "/Teste");
 
-    percorrerCaminho(&particao, "/ICC/", &inode, &nome);
+    printf("B\n");
 
-    listarArquivo(inode, "Teste.txt"); // Tentando listar arquivo inexistente
+    criarDiretorioParticao(&particao, "/Teste", "Dirrrr");
 
-    listarDiretorio(inode);
+    printf("C\n");
 
-    criarDiretorio(inode, "SEINAO");
-    
-    criarDiretorio(inode, "IC");
-    
-    criarArquivo(inode, "Teste.txt", "Alguma coisa");
-
-    percorrerCaminho(&particao, "/Home/", &inode, &nome);
-
-    criarDiretorio(inode, "SO");
-    
-    criarArquivo(inode, "Teste2.txt", "Alguma coisa2");
-
-    listarDiretorio(inode);
-
-    percorrerCaminho(&particao, "/ICC/Teste.txt", &inode, &nome);
-
-    listarDiretorio(inode);
-
-    printf("Listando...\n");
-    listarArquivo(inode, nome);
-    printf("....\n");
-
-    moverArquivoParticao(&particao, "/ICC/Teste.txt", "/Home/");
-
-    percorrerCaminho(&particao, "/Home/Teste.txt", &inode, &nome);
-
-    printf("Listando...\n");
-    listarArquivo(inode, nome);
-    printf("....\n");
+    mostrarDiretorioParticao(&particao, "/Teste");
 
     return 0;
 
