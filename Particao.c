@@ -24,13 +24,13 @@ void inicializarParticao(Particao *particao, size_t TamParticao, size_t TamBloco
 void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** nome) {
     INode* ajudante;
     int i = 0, j = 0, cont = 0;
-    char help[100], *cam;
+    char help[100];
+    char *cam;
     int flag;
 
-    
+    cam = (char*) malloc(sizeof(caminho)+1);
+    strcpy(cam, caminho);
     if(caminho[strlen(caminho)-1] != '/') {
-        strcpy(cam, caminho);
-        
         cam[strlen(caminho)] = '/';
         cam[strlen(caminho)+1] = '\0';
 
