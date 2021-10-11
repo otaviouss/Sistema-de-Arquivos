@@ -1,0 +1,4 @@
+cd / teste
+cd teste algo
+rd teste algo algo2
+ma cam1 nom cam2

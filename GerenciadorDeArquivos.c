@@ -27,14 +27,15 @@ void lerArquivoInstrucoes(char* nome, Instrucao** inst) {
 
     while(!feof(arq)) {
         fscanf(arq, "%s", temp);
-
         if(count == 0) {
             strcpy((*inst)[numInst].comando, temp);
+        } else if(count == 1) {
+            strcpy((*inst)[numInst].caminho1, temp);
             if(strcmp((*inst)[numInst].comando, "ld") == 0) {
                 count = -1;
                 numInst++;
             }
-        } else if(count == 1) {
+        } else if(count == 2) {
             strcpy((*inst)[numInst].nome1, temp);
             if( strcmp((*inst)[numInst].comando, "cd") == 0 ||
                 strcmp((*inst)[numInst].comando, "ad") == 0 ||
@@ -44,7 +45,7 @@ void lerArquivoInstrucoes(char* nome, Instrucao** inst) {
                     count = -1;
                     numInst++;
                 }
-        } else if(count == 2) {
+        } else if(count == 3) {
             if(strcmp((*inst)[numInst].comando, "rd") == 0) {
                 strcpy((*inst)[numInst].nome2, temp);
             } else if(strcmp((*inst)[numInst].comando, "ma") == 0) {
@@ -55,10 +56,7 @@ void lerArquivoInstrucoes(char* nome, Instrucao** inst) {
         }
         count++;
     }
-    printf("OI");
-    fclose(arq);
-    printf("OI");
-    return;
+    // fclose(arq);
 }
 
 void lerArquivo(char* nome, char** descricao) {
