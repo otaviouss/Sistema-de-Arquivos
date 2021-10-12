@@ -20,8 +20,7 @@
 //        ++numLinha;
 //    }
 //
-//    fclose(arq);
-//    arq = fopen(nome, "r");
+//    rewind(arq);
 //
 //    (*inst) = (Instrucao*) malloc(numLinha*sizeof(Instrucao));
 //
@@ -56,36 +55,41 @@
 //        }
 //        count++;
 //    }
-//    // fclose(arq);
+//    fclose(arq);
 //}
 
-void lerArquivo(char* nome, char* descricao) {
+void lerArquivo(char* nome, char** descricao) {
     FILE *arq;
     char temp[100];
+    int cont = 0;
+    
+    (*descricao) = (char*) calloc(sizeof(char), 10000);
 
     arq = fopen(nome, "r");
     if(arq == NULL) {
         printf("Arquivo não encontrado.\n");
+        fclose(arq);
         return;
     }
-    int cont = 0;
+
     while(!feof(arq)) {
         fscanf(arq, "%s", temp);
-        strcat(descricao, temp);
-        strcat(descricao, " ");
+        strcat((*descricao), temp);
+        strcat((*descricao), " ");
     }
+    
+    /*
+    char caracter;
+    while(!feof(arq)){
 
-//    char caracter;
-//    while(!feof(arq)){
-//
-//        caracter = fgetc(arq);
-//
-//        if(caracter == '\0') break;
-//        descricao[cont] = caracter;
-//        cont++;
-//    }
-//    printf("%d", cont);
+        caracter = fgetc(arq);
 
+        if(caracter == '\0') break;
+        descricao[cont] = caracter;
+        cont++;
+    }
+    printf("%d", cont);
+    */
     fclose(arq);
 
 }

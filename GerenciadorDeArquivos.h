@@ -11,6 +11,6 @@ typedef struct {
 
 void lerArquivoInstrucoes(char* nome, Instrucao** inst);
 
-void lerArquivo(char* nome, char* descricao);
+void lerArquivo(char* nome, char** descricao);
 
 #endif

@@ -20,7 +20,7 @@ void inicializarParticao(Particao *particao, size_t TamParticao, size_t TamBloco
     particao->raiz = inode;
 }
 
-// Exemplo de caminho: /DIR1/DIR2/DIR3/teste.txt
+// Exemplo de caminho: /DIR1/DIR2/DIR3
 void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** nome) {
     char cam[100];
     INode* ajudante;
@@ -129,14 +129,22 @@ void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* c
     strcpy(nome2, nome);
     strcpy(conteudo2, conteudo);
 
+    printf("Z\n");
+
     percorrerCaminho(particao, caminho, &inode, &n);
 
+    printf("A\n");
+
     criarArquivo(inode, nome2, conteudo2);
+
+    printf("B\n");
 
     tam = sizeof(inode);
 
     tam = (size_t)((float) tam / (float) particao->bloco);
     tam *= particao->bloco;
+
+    printf("C\n");
 
     // Testando se estourou o espaço livre.
     if(tam+particao->ocupado > particao->particao) {
@@ -144,6 +152,8 @@ void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* c
         printf("Particao Cheia. Impossivel inserir o arquivo.");
         return;
     }
+
+    printf("D\n");
 
     particao->ocupado += tam;
 
