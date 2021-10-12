@@ -52,7 +52,7 @@ void help() {
     printf("|      Mover Arquivo | ma [caminho origem] [nome] [caminho destino] |\n");
     printf("|              Ajuda | help                                         |\n");
     printf("|               Sair | exit                                         |\n");
-    printf("--------------------------------------------------------------------|\n");
+    printf("---------------------------------------------------------------------\n");
 }
 
 void execucaoManual(Particao particao) {
