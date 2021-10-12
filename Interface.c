@@ -56,22 +56,24 @@ void help() {
 }
 
 void execucaoManual(Particao particao) {
-    char op, conteudo, *descricao, *nome, *nomeNovo;
-    char *caminho = (char *) malloc(sizeof(char)*100);
-    char *caminhoDestino = (char *) malloc(sizeof(char)*100);
+    char nome[100];
+    char nomeNovo[100];
+    char op[10];
+    char caminho[100];
+    char descricao[10000];
+    char caminhoDestino[100];
 
     help();
 
     printf("Comando: ");
-    scanf("%s", &op);
+    scanf("%s", op);
 
-    while (strcmp(&op, "exit") != 0) {
-         nome = (char *) malloc(sizeof(char)*100);
+    while (strcmp(op, "exit") != 0) {
 
-        if(strcmp(&op, "help") == 0) {
+        if(strcmp(op, "help") == 0) {
             help();
         }else
-        if(strcmp(&op, "cd") == 0) {
+        if(strcmp(op, "cd") == 0) {
             printf("Caminho: ");
             scanf("%s", caminho);
             printf("Nome: ");
@@ -79,8 +81,7 @@ void execucaoManual(Particao particao) {
             printf("\n");
             criarDiretorioParticao(&particao, caminho, nome);
         }else
-        if(strcmp(&op, "rd") == 0 || strcmp(&op, "ra") == 0){
-            nomeNovo = (char *) malloc(sizeof(char)*100);
+        if(strcmp(op, "rd") == 0 || strcmp(op, "ra") == 0){
             printf("Caminho: ");
             scanf("%s", caminho);
             printf("Nome: ");
@@ -91,7 +92,7 @@ void execucaoManual(Particao particao) {
             renomearItemParticao(&particao, caminho, nome, nomeNovo);
             free(nomeNovo);
         }else
-        if(strcmp(&op, "ad") == 0){
+        if(strcmp(op, "ad") == 0){
             printf("Caminho: ");
             scanf("%s", caminho);
             printf("Nome: ");
@@ -99,26 +100,29 @@ void execucaoManual(Particao particao) {
             printf("\n");
             deletarItemParticao(&particao, caminho, nome);
         }else
-        if(strcmp(&op, "ld") == 0){
+        if(strcmp(op, "ld") == 0){
             printf("Caminho: ");
             scanf("%s", caminho);
             printf("\n");
             mostrarDiretorioParticao(&particao, caminho);
         }else
-        if(strcmp(&op, "ca") == 0){
+        if(strcmp(op, "ca") == 0){
             printf("Caminho: ");
             scanf("%s", caminho);
             printf("Nome do arquivo real (Com extensao): ");
             scanf("%s", nome);
-           //  printf("Descricao: ");
-            // scanf("%s", descricao);
-            lerArquivo(nome, &descricao);
+
+            //descricao = (char*)malloc(sizeof(char)*10000);
+            //printf("Descricao: ");
+            //scanf("%s", descricao);
+            lerArquivo(nome, descricao);
+
             printf("D: %s\n", descricao);
             printf("\n");
             criarArquivoParticao(&particao, caminho, nome, descricao);
             // free(descricao);
         }else
-        if(strcmp(&op, "aa") == 0){
+        if(strcmp(op, "aa") == 0){
             printf("Caminho: ");
             scanf("%s", caminho);
             printf("Nome: ");
@@ -126,7 +130,7 @@ void execucaoManual(Particao particao) {
             printf("\n");
             deletarItemParticao(&particao, caminho, nome);
         }else
-        if(strcmp(&op, "la") == 0){
+        if(strcmp(op, "la") == 0){
             printf("Caminho: ");
             scanf("%s", caminho);
             printf("Nome: ");
@@ -134,7 +138,7 @@ void execucaoManual(Particao particao) {
             printf("\n");
             mostrarArquivoParticao(&particao, caminho, nome);
         }else
-        if(strcmp(&op, "ma") == 0){
+        if(strcmp(op, "ma") == 0){
             printf("Caminho de Origem: ");
             scanf("%s", caminho);
             printf("Nome: ");
@@ -144,7 +148,7 @@ void execucaoManual(Particao particao) {
             printf("\n");
             moverArquivoParticao(&particao, caminho, caminhoDestino, nome);
         }else
-        if(strcmp(&op, "exit") == 0) {
+        if(strcmp(op, "exit") == 0) {
             free(nome);
             return;
         } else {
@@ -152,15 +156,16 @@ void execucaoManual(Particao particao) {
             help();
         }
 
-        free(nome);
+        //free(nome);
         printf("\nComando: ");
-        scanf("%s", &op);
+        scanf("%s", op);
 
     }
 }
 
 void execucaoAutomatica(Particao particao) {
-    char *nome, *descricao;
+    char nome[100];
+    char descricao[10000];
     Instrucao *inst;
     size_t n, i;
 
@@ -172,8 +177,6 @@ void execucaoAutomatica(Particao particao) {
     //lerArquivoInstrucoes(nome, &inst);
 
     n = sizeof(inst)/sizeof(inst[0]);
-
-    printf("Tam: %d\n", n);
 
     for(i = 0; i<n; i++) {
         if(strcmp(inst[i].comando, "cd") == 0) {

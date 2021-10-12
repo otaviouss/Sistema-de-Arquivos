@@ -58,12 +58,12 @@
 //    fclose(arq);
 //}
 
-void lerArquivo(char* nome, char** descricao) {
+void lerArquivo(char* nome, char descricao[]) {
     FILE *arq;
     char temp[100];
     int cont = 0;
     
-    (*descricao) = (char*) calloc(sizeof(char), 10000);
+    //(*descricao) = (char*) calloc(sizeof(char), 10000);
 
     arq = fopen(nome, "r");
     if(arq == NULL) {
@@ -74,8 +74,8 @@ void lerArquivo(char* nome, char** descricao) {
 
     while(!feof(arq)) {
         fscanf(arq, "%s", temp);
-        strcat((*descricao), temp);
-        strcat((*descricao), " ");
+        strcat(descricao, temp);
+        strcat(descricao, " ");
     }
     
     /*

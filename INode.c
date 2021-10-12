@@ -44,8 +44,8 @@ void criarDiretorioInicial(INode* inode, char* nome) {
 
 void criarDiretorio(INode* inode, char* nome) {
     // Variáveis necessárias para ver horario atual
-    time_t rawtime = time(NULL);
-    struct tm *timeinfo = localtime(&rawtime);
+//    time_t rawtime = time(NULL);
+//    struct tm *timeinfo = localtime(&rawtime);
 
     // Criando novo inode do diretório
     INode in;
@@ -128,29 +128,29 @@ int deletarItem(INode* inode, char* nome) {
     
 }
 
-void listarDiretorio(INode* inode){
+void listarDiretorio(INode inode){
     int i;
     
     // Variáveis necessárias para ver horario atual
-    time_t rawtime = time(NULL);
-    struct tm *timeinfo = localtime(&rawtime);
+//    time_t rawtime = time(NULL);
+//    struct tm *timeinfo = localtime(&rawtime);
+//
+//    // Definindo data do último acesso (Data Atual)
+//    setData(&((*inode)->dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year,
+//                timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     
-    // Definindo data do último acesso (Data Atual)
-    setData(&(inode->dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
-                timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-    
-    printf("Diretorio %s\n", inode->nome);
+    printf("Diretorio %s\n", inode.nome);
 
     printf("Data de Criacao: ");
-    getData(&inode->dataCriacao);
+    getData(&inode.dataCriacao);
     
     printf("Data de Modificacao: ");
-    getData(&inode->dataModificacao);
+    getData(&inode.dataModificacao);
     
     printf("Data de Acesso: ");
-    getData(&inode->dataAcesso);
+    getData(&inode.dataAcesso);
 
-    ImprimeLista(inode);
+    ImprimeLista(&inode);
 
 }
 
@@ -308,7 +308,7 @@ void listarArquivoINode(INode* inode) {
 // Operações para lidar com a lista de arquivos dentro do diretório
 
 void FLVazia(INode* lista) {
-    lista->pPrimeiro = (Apontador) malloc(sizeof(Celula));
+    lista->pPrimeiro = (Celula*) malloc(sizeof(Celula));
     // lista->pUltimo = lista->pPrimeiro;
     lista->pPrimeiro->pProx = NULL;
 }
@@ -412,7 +412,7 @@ int ImprimeArquivo(INode* lista, char* nome) {
     return 0;
 }
 
-int RetornaConteudoArquivo(INode* lista, char* nome, char** conteudo) {
+int RetornaConteudoArquivo(INode* lista, char* nome, char conteudo[]) {
     Apontador pAux;
 
     // Variáveis necessárias para ver horario atual
@@ -426,7 +426,7 @@ int RetornaConteudoArquivo(INode* lista, char* nome, char** conteudo) {
         if(strcmp(pAux->inode.nome, nome) == 0) {
             setData(&(pAux->inode.dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                         timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
-            strcpy((*conteudo), pAux->inode.conteudo);
+            strcpy(conteudo, pAux->inode.conteudo);
             return 1;
         }
         pAux = pAux->pProx;
@@ -436,6 +436,9 @@ int RetornaConteudoArquivo(INode* lista, char* nome, char** conteudo) {
 
 void ImprimeLista(INode* lista) {
     Apontador pAux;
+
+    if(LehVazia(lista)) return;
+
     pAux = lista->pPrimeiro->pProx;
 
     if(pAux == NULL) {

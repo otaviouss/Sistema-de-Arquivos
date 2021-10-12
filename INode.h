@@ -31,7 +31,7 @@ void criarDiretorio(INode* inode, char* nome);
 
 void renomearDiretorioAtual(INode* inode, char* nome);
 
-void listarDiretorio(INode* inode);
+void listarDiretorio(INode inode);
 
 void criarArquivo(INode* inode, char* nome, char* conteudo);
 
@@ -61,7 +61,7 @@ int RenomearINode(INode* lista, char* nomeAntigo, char* nomeNovo);
 
 int ImprimeArquivo(INode* lista, char* nome);
 
-int RetornaConteudoArquivo(INode* lista, char* nome, char** conteudo);
+int RetornaConteudoArquivo(INode* lista, char* nome, char conteudo[]);
 
 void ImprimeLista(INode* lista);
 
