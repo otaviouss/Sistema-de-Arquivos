@@ -90,7 +90,6 @@ void execucaoManual(Particao particao) {
             scanf("%s", nomeNovo);
             printf("\n");
             renomearItemParticao(&particao, caminho, nome, nomeNovo);
-            free(nomeNovo);
         }else
         if(strcmp(op, "ad") == 0){
             printf("Caminho: ");
@@ -149,14 +148,12 @@ void execucaoManual(Particao particao) {
             moverArquivoParticao(&particao, caminho, caminhoDestino, nome);
         }else
         if(strcmp(op, "exit") == 0) {
-            free(nome);
             return;
         } else {
             printf("Comando inexistente! Veja os comandos Disponiveis:\n");
             help();
         }
 
-        //free(nome);
         printf("\nComando: ");
         scanf("%s", op);
 
