@@ -21,13 +21,10 @@ void inicializarParticao(Particao *particao, size_t TamParticao, size_t TamBloco
 }
 
 // Exemplo de caminho: /DIR1/DIR2/DIR3/teste.txt
-void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** nome) {
-    char cam[100];
+void percorrerCaminho(Particao* particao, char* caminho, INode** inode) {
+    char cam[110], help[100];
     INode* ajudante;
-    int i = 0, j = 0, cont = 0;
-    char help[100];
-
-    int flag;
+    int i = 0, cont = 0, flag;
 
     strcpy(cam, caminho);
     if(caminho[strlen(caminho)-1] != '/') {
@@ -49,7 +46,6 @@ void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** n
             help[cont] = cam[i];
             help[cont+1] = '\0';
             cont++;
-            strcpy((*nome), help);
         } else {
             flag = BuscarINode(ajudante, help, ajudante);
             
@@ -70,13 +66,12 @@ void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** n
 
 void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminhoDestino, char* nome) {
     INode *iNodeOrigem, *iNodeDestino;
-    char *n, *conteudo;
+    char *conteudo;
     
-    n = (char*) malloc(100*sizeof(char));
     conteudo = (char*) malloc(1000*sizeof(char));
     
-    percorrerCaminho(particao, caminhoDestino, &iNodeDestino, &n);
-    percorrerCaminho(particao, caminhoOrigem, &iNodeOrigem, &n);
+    percorrerCaminho(particao, caminhoDestino, &iNodeDestino);
+    percorrerCaminho(particao, caminhoOrigem, &iNodeOrigem);
 
     RetornaConteudoArquivo(iNodeOrigem, nome, &conteudo);
 
@@ -89,15 +84,12 @@ void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminho
 
 void criarDiretorioParticao(Particao* particao, char* caminho, char* nome) {
     INode* inode;
-    char* n;
-    char *nome2 = (char*) malloc(sizeof(nome) + 1);
     size_t tam;
+    char *nome2 = (char*) malloc(sizeof(nome) + 1);
 
     strcpy(nome2, nome);
-    
-    n = (char*) malloc(100*sizeof(char));
 
-    percorrerCaminho(particao, caminho, &inode, &n);
+    percorrerCaminho(particao, caminho, &inode);
 
     criarDiretorio(inode, nome2);
 
@@ -120,7 +112,6 @@ void criarDiretorioParticao(Particao* particao, char* caminho, char* nome) {
 
 void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* conteudo) {
     INode* inode;
-    char* n = (char*) malloc(100*sizeof(char));
     size_t tam;
 
     char *nome2 = (char*) malloc(sizeof(nome) + 1);
@@ -129,7 +120,7 @@ void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* c
     strcpy(nome2, nome);
     strcpy(conteudo2, conteudo);
 
-    percorrerCaminho(particao, caminho, &inode, &n);
+    percorrerCaminho(particao, caminho, &inode);
 
     criarArquivo(inode, nome2, conteudo2);
 
@@ -152,12 +143,9 @@ void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* c
 
 void deletarItemParticao(Particao* particao, char* caminho, char* nome) {
     INode* inode;
-    char* n;
     size_t tam;
-    
-    n = (char*) malloc(100*sizeof(char));
 
-    percorrerCaminho(particao, caminho, &inode, &n);
+    percorrerCaminho(particao, caminho, &inode);
 
     tam = sizeof(inode);
 
@@ -177,16 +165,13 @@ void deletarItemParticao(Particao* particao, char* caminho, char* nome) {
 
 void renomearItemParticao(Particao* particao, char* caminho, char* nomeAtual, char* novoNome) {
     INode* inode;
-    char* n;
     size_t tam;
 
     char *nome = (char*) malloc(sizeof(novoNome) + 1);
 
     strcpy(nome, novoNome);
     
-    n = (char*) malloc(100*sizeof(char));
-
-    percorrerCaminho(particao, caminho, &inode, &n);
+    percorrerCaminho(particao, caminho, &inode);
 
     renomearItem(inode, nomeAtual, nome);
 
@@ -194,24 +179,16 @@ void renomearItemParticao(Particao* particao, char* caminho, char* nomeAtual, ch
 
 void mostrarArquivoParticao(Particao* particao, char* caminho, char* nome) {
     INode* inode;
-    char* n;
-    size_t tam;
-    
-    n = (char*) malloc(100*sizeof(char));
 
-    percorrerCaminho(particao, caminho, &inode, &n);
+    percorrerCaminho(particao, caminho, &inode);
 
     listarArquivo(inode, nome);
 }
 
 void mostrarDiretorioParticao(Particao* particao, char* caminho) {
     INode* inode;
-    char* n;
-    size_t tam;
-    
-    n = (char*) malloc(100*sizeof(char));
 
-    percorrerCaminho(particao, caminho, &inode, &n);
+    percorrerCaminho(particao, caminho, &inode);
 
     listarDiretorio(inode);
 }

@@ -9,7 +9,7 @@ typedef struct {
     char nome2[101];
 } Instrucao;
 
-void lerArquivoInstrucoes(char* nome, Instrucao** inst);
+void lerArquivoInstrucoes(char* nome, Instrucao** inst, int* n);
 
 void lerArquivo(char* nome, char* descricao);
 

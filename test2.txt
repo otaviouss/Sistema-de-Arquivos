@@ -1,4 +1,13 @@
+ld /
 cd / teste
-cd teste algo
-rd teste algo algo2
-ma cam1 nom cam2
+cd /teste algo
+ld /teste
+cd / haha
+rd /teste algo mudou
+ld /teste
+ca / test.txt
+ld /
+la / test.txt
+ma / test.txt /teste
+ld /teste
+ld /
