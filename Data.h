@@ -10,7 +10,7 @@ typedef struct {
     int segundo;
 } Data;
 
-void setData(Data* data, int dia, int mes, int ano, int hora, int minuto, int segundo);
+void setData(Data* data);
 
 void getData(Data* data);
 

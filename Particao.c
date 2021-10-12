@@ -75,7 +75,7 @@ void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminho
     percorrerCaminho(particao, caminhoDestino, &iNodeDestino);
     percorrerCaminho(particao, caminhoOrigem, &iNodeOrigem);
 
-    RetornaConteudoArquivo(iNodeOrigem, nome, &conteudo);
+    RetornaConteudoArquivo(iNodeOrigem, nome, conteudo);
 
     criarArquivo(iNodeDestino, nome, conteudo);
 
@@ -91,12 +91,14 @@ void criarDiretorioParticao(Particao* particao, char* caminho, char* nome) {
     size_t tam;
 
     strcpy(nome2, nome);
-    
-
 
     percorrerCaminho(particao, caminho, &inode);
+    
+    listarDiretorio(*inode);
 
     criarDiretorio(inode, nome2);
+
+    listarDiretorio(*inode);
 
     tam = sizeof(inode);
 
@@ -204,8 +206,6 @@ void mostrarArquivoParticao(Particao* particao, char* caminho, char* nome) {
 
     size_t tam;
     
-
-
     percorrerCaminho(particao, caminho, &inode);
 
     listarArquivo(inode, nome);
@@ -214,8 +214,6 @@ void mostrarArquivoParticao(Particao* particao, char* caminho, char* nome) {
 void mostrarDiretorioParticao(Particao* particao, char* caminho) {
     INode* inode;
     size_t tam;
-    
-
 
     percorrerCaminho(particao, caminho, &inode);
 

@@ -1,14 +1,19 @@
 #include <stdio.h>
+#include <time.h>
 
 #include "Data.h"
 
-void setData(Data* data, int dia, int mes, int ano, int hora, int minuto, int segundo) {
-    data->dia = dia;
-    data->mes = mes + 1;
-    data->ano = ano + 1900;
-    data->hora = hora;
-    data->minuto = minuto;
-    data->segundo = segundo;
+void setData(Data* data) {
+    // Variáveis necessárias para ver horario atual
+    time_t rawtime = time(NULL);
+    struct tm *timeinfo = localtime(&rawtime);
+
+    data->dia = timeinfo->tm_mday;
+    data->mes =  timeinfo->tm_mon + 1;
+    data->ano = timeinfo->tm_year + 1900;
+    data->hora = timeinfo->tm_hour;
+    data->minuto = timeinfo->tm_min;
+    data->segundo = timeinfo->tm_sec;
 }
 
 void getData(Data* data) {
