@@ -59,12 +59,9 @@
 //    // fclose(arq);
 //}
 
-void lerArquivo(char* nome, char** descricao) {
+void lerArquivo(char* nome, char* descricao) {
     FILE *arq;
     char temp[100];
-
-    (*descricao) = (char*) malloc(10000 * sizeof(char));
-    //(*descricao)[0]='\0';
 
     arq = fopen(nome, "r");
     if(arq == NULL) {
@@ -72,27 +69,22 @@ void lerArquivo(char* nome, char** descricao) {
         return;
     }
     int cont = 0;
-//    while(!feof(arq)) {
-//        fscanf(arq, "%s", temp);
-//        if(cont == 0){
-//            cont++;
-//            strcpy(*descricao, temp);
-//        }else {
-//            strcat(*descricao, temp);
-//        }
-//        strcat(*descricao, " ");
-//
-//    }
-    char caracter;
-    while(!feof(arq)){
-
-        caracter = fgetc(arq);
-
-        if(caracter == '\0') break;
-        (*descricao)[cont] = caracter;
-        cont++;
+    while(!feof(arq)) {
+        fscanf(arq, "%s", temp);
+        strcat(descricao, temp);
+        strcat(descricao, " ");
     }
-    printf("%d", cont);
+
+//    char caracter;
+//    while(!feof(arq)){
+//
+//        caracter = fgetc(arq);
+//
+//        if(caracter == '\0') break;
+//        descricao[cont] = caracter;
+//        cont++;
+//    }
+//    printf("%d", cont);
 
     fclose(arq);
 

@@ -64,8 +64,8 @@ void percorrerCaminho(Particao* particao, char* caminho, INode** inode, char** n
 
     (*inode) = ajudante;
 
-    if(ajudante->tipo == 0) printf("Diretorio %s encontrado!\n", ajudante->nome);
-    else                    printf("Arquivo %s encontrado!\n", *nome);
+    // if(ajudante->tipo == 0) printf("Diretorio %s encontrado!\n", ajudante->nome);
+    // else                    printf("Arquivo %s encontrado!\n", *nome);
 }
 
 void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminhoDestino, char* nome) {
@@ -90,7 +90,7 @@ void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminho
 void criarDiretorioParticao(Particao* particao, char* caminho, char* nome) {
     INode* inode;
     char* n;
-    char *nome2 = (char*) malloc(sizeof(nome));
+    char *nome2 = (char*) malloc(sizeof(nome) + 1);
     size_t tam;
 
     strcpy(nome2, nome);
@@ -114,6 +114,8 @@ void criarDiretorioParticao(Particao* particao, char* caminho, char* nome) {
     }
 
     particao->ocupado += tam;
+
+    printf("Diretorio Criado com Sucesso!\n");
 }
 
 void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* conteudo) {
@@ -121,8 +123,8 @@ void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* c
     char* n = (char*) malloc(100*sizeof(char));
     size_t tam;
 
-    char *nome2 = (char*) malloc(sizeof(nome));
-    char *conteudo2 = (char*) malloc(sizeof(conteudo));
+    char *nome2 = (char*) malloc(sizeof(nome) + 1);
+    char *conteudo2 = (char*) malloc(sizeof(conteudo) + 1);
 
     strcpy(nome2, nome);
     strcpy(conteudo2, conteudo);
@@ -144,6 +146,8 @@ void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* c
     }
 
     particao->ocupado += tam;
+
+    printf("Arquivo Criado com Sucesso!\n");
 }
 
 void deletarItemParticao(Particao* particao, char* caminho, char* nome) {
@@ -157,24 +161,34 @@ void deletarItemParticao(Particao* particao, char* caminho, char* nome) {
 
     tam = sizeof(inode);
 
-    deletarItem(inode, nome);
+    if(deletarItem(inode, nome) == 1) {
+        tam = (size_t )((float) tam / (float) particao->bloco);
+        tam *= particao->bloco;
 
-    tam = (size_t )((float) tam / (float) particao->bloco);
-    tam *= particao->bloco;
+        particao->ocupado -= tam;
 
-    particao->ocupado -= tam;
+        printf("Item Deletado com Sucesso!\n");
+    } else {
+        printf("Nao foi possivel deletar.\n");
+    }
+
+    
 }
 
 void renomearItemParticao(Particao* particao, char* caminho, char* nomeAtual, char* novoNome) {
     INode* inode;
     char* n;
     size_t tam;
+
+    char *nome = (char*) malloc(sizeof(novoNome) + 1);
+
+    strcpy(nome, novoNome);
     
     n = (char*) malloc(100*sizeof(char));
 
     percorrerCaminho(particao, caminho, &inode, &n);
 
-    renomearItem(inode, nomeAtual, novoNome);
+    renomearItem(inode, nomeAtual, nome);
 
 }
 

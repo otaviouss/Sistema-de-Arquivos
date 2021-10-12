@@ -99,10 +99,10 @@ void renomearDiretorioAtual(INode* inode, char* nome) {
     
     inode->nome = nome;
 
-    printf("Diretorio Atual Renomeado com Sucesso!\n");
+    // printf("Diretorio Atual Renomeado com Sucesso!\n");
 }
 
-void deletarItem(INode* inode, char* nome) {
+int deletarItem(INode* inode, char* nome) {
     int i;
     
     // Variáveis necessárias para ver horario atual
@@ -111,20 +111,20 @@ void deletarItem(INode* inode, char* nome) {
 
     if(LehVazia(inode)) {
         printf("Diretorio Vazio!\n");
-        return;
+        return 0;
     }
     
     // Definindo data do último acesso (Data Atual)
     setData(&(inode->dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
-    RetiraINode(inode, nome);
+    if(RetiraINode(inode, nome) != 1) return -1;
 
     // Definindo data da última modificação (Data atual)
     setData(&(inode->dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
         timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
-    printf("Arquivo Deletado com Sucesso!\n");
+    return 1;
     
 }
 
@@ -223,7 +223,10 @@ void renomearItem(INode* inode, char* nomeAtual, char* novoNome) {
     setData(&(inode->dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     
-    RenomearINode(inode, nomeAtual, novoNome);
+    if(RenomearINode(inode, nomeAtual, novoNome) != 1) {
+        printf("Nao foi possivel renomear.\n");
+        return;
+    }
 
     // Definindo data da última modificação (Data atual)
     setData(&(inode->dataModificacao), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
@@ -279,7 +282,9 @@ void listarArquivo(INode* inode, char* nome) {
     setData(&(inode->dataAcesso), timeinfo->tm_mday, timeinfo->tm_mon, timeinfo->tm_year, 
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
 
-    ImprimeArquivo(inode, nome);
+    if(ImprimeArquivo(inode, nome) != 1) {
+        printf("Arquivo Inexistente no caminho especificado.\n");
+    }
 
 }
 
@@ -432,6 +437,11 @@ int RetornaConteudoArquivo(INode* lista, char* nome, char** conteudo) {
 void ImprimeLista(INode* lista) {
     Apontador pAux;
     pAux = lista->pPrimeiro->pProx;
+
+    if(pAux == NULL) {
+        printf("Diretorio Vazio.\n");
+    }
+
     while(pAux != NULL) {
         if(pAux->inode.tipo == 0)      printf("  Diretorio %s\n", pAux->inode.nome);
         else if(pAux->inode.tipo == 1) printf("  Arquivo %s\n", pAux->inode.nome);

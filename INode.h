@@ -37,7 +37,7 @@ void criarArquivo(INode* inode, char* nome, char* conteudo);
 
 void renomearItem(INode* inode, char* nomeAtual, char* novoNome);
 
-void deletarItem(INode* inode, char* nome);
+int deletarItem(INode* inode, char* nome);
 
 void deletarArquivoINode(INode* inode);
 
