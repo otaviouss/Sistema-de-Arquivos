@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #include "Particao.h"
 #include "INode.h"
+
+int teto(double number) {
+    return (int)(number + 0.5);
+}
 
 void inicializarParticao(Particao *particao, size_t TamParticao, size_t TamBloco){
     INode inode;
@@ -68,7 +71,7 @@ void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminho
     INode *iNodeOrigem, *iNodeDestino;
     char *conteudo;
     
-    conteudo = (char*) malloc(1000*sizeof(char));
+    conteudo = (char*) malloc(10000*sizeof(char));
     
     percorrerCaminho(particao, caminhoDestino, &iNodeDestino);
     percorrerCaminho(particao, caminhoOrigem, &iNodeOrigem);
@@ -85,22 +88,19 @@ void moverArquivoParticao(Particao* particao, char* caminhoOrigem, char* caminho
 void criarDiretorioParticao(Particao* particao, char* caminho, char* nome) {
     INode* inode;
     size_t tam;
-    char *nome2 = (char*) malloc(sizeof(nome) + 1);
-
-    strcpy(nome2, nome);
 
     percorrerCaminho(particao, caminho, &inode);
 
-    criarDiretorio(inode, nome2);
+    criarDiretorio(inode, nome);
 
-    tam = sizeof(inode);
+    tam = sizeof(*inode);
 
-    tam = (size_t)((float) tam / (float) particao->bloco);
+    tam = teto((float) tam / (float) particao->bloco);
     tam *= particao->bloco;
 
     // Testando se estourou o espaço livre.
     if(tam+particao->ocupado > particao->particao) {
-        deletarItem(inode, nome2);
+        deletarItem(inode, nome);
         printf("Particao Cheia. Impossivel criar o diretorio.");
         return;
     }
@@ -114,24 +114,18 @@ void criarArquivoParticao(Particao* particao, char* caminho, char* nome, char* c
     INode* inode;
     size_t tam;
 
-    char *nome2 = (char*) malloc(sizeof(nome) + 1);
-    char *conteudo2 = (char*) malloc(sizeof(conteudo) + 1);
-
-    strcpy(nome2, nome);
-    strcpy(conteudo2, conteudo);
-
     percorrerCaminho(particao, caminho, &inode);
 
-    criarArquivo(inode, nome2, conteudo2);
+    criarArquivo(inode, nome, conteudo);
 
-    tam = sizeof(inode);
+    tam = sizeof(*inode);
 
-    tam = (size_t)((float) tam / (float) particao->bloco);
+    tam = teto((float) tam / (float) particao->bloco);
     tam *= particao->bloco;
 
     // Testando se estourou o espaço livre.
     if(tam+particao->ocupado > particao->particao) {
-        deletarItem(inode, nome2);
+        deletarItem(inode, nome);
         printf("Particao Cheia. Impossivel inserir o arquivo.");
         return;
     }
@@ -150,7 +144,7 @@ void deletarItemParticao(Particao* particao, char* caminho, char* nome) {
     tam = sizeof(inode);
 
     if(deletarItem(inode, nome) == 1) {
-        tam = (size_t )((float) tam / (float) particao->bloco);
+        tam = teto((float) tam / (float) particao->bloco);
         tam *= particao->bloco;
 
         particao->ocupado -= tam;
@@ -167,7 +161,7 @@ void renomearItemParticao(Particao* particao, char* caminho, char* nomeAtual, ch
     INode* inode;
     size_t tam;
 
-    char *nome = (char*) malloc(sizeof(novoNome) + 1);
+    char *nome = (char*) malloc(sizeof(novoNome));
 
     strcpy(nome, novoNome);
     

@@ -62,7 +62,7 @@ void execucaoManual(Particao particao) {
     help();
 
     printf("Comando: ");
-    scanf("%s", &op);
+    scanf("%s", op);
 
     while (strcmp(op, "exit") != 0) {
          nome = (char *) malloc(sizeof(char)*100);
@@ -105,15 +105,15 @@ void execucaoManual(Particao particao) {
             mostrarDiretorioParticao(&particao, caminho);
         }else
         if(strcmp(op, "ca") == 0){
-            descricao = (char*) malloc(10000 * sizeof(char));
+            descricao = (char*) calloc(10000, sizeof(char));
             printf("Caminho: ");
             scanf("%s", caminho);
             printf("Nome do arquivo real (Com extensao): ");
             scanf("%s", nome);
-            printf("Descricao: ");
-            scanf("%s", descricao);
-            // lerArquivo(nome, descricao);
-            // printf("D: %s\n", descricao);
+            //printf("Descricao: ");
+            //scanf("%s", descricao);
+            lerArquivo(nome, descricao);
+            printf("D: %s\n", descricao);
             printf("\n");
             criarArquivoParticao(&particao, caminho, nome, descricao);
             free(descricao);
@@ -154,7 +154,7 @@ void execucaoManual(Particao particao) {
 
         free(nome);
         printf("\nComando: ");
-        scanf("%s", &op);
+        scanf("%s", op);
 
     }
 }
@@ -186,8 +186,7 @@ void execucaoAutomatica(Particao particao) {
         }else
         if(strcmp(inst[i].comando, "ca") == 0){
             descricao = (char*) malloc(10000 * sizeof(char));
-            descricao = "vazio";
-            // lerArquivo(inst[i].nome1, descricao);
+            lerArquivo(inst[i].nome1, descricao);
             criarArquivoParticao(&particao, inst[i].caminho1, inst[i].nome1, descricao);
         }else
         if(strcmp(inst[i].comando, "ra") == 0){

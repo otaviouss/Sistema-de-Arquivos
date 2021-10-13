@@ -70,23 +70,13 @@ void lerArquivo(char* nome, char* descricao) {
         printf("Arquivo não encontrado.\n");
         return;
     }
-    int cont = 0;
+
+    fscanf(arq, "%s", temp);
     while(!feof(arq)) {
-        fscanf(arq, "%s", temp);
         strcat(descricao, temp);
         strcat(descricao, " ");
+        fscanf(arq, "%s", temp);
     }
-
-//    char caracter;
-//    while(!feof(arq)){
-//
-//        caracter = fgetc(arq);
-//
-//        if(caracter == '\0') break;
-//        descricao[cont] = caracter;
-//        cont++;
-//    }
-//    printf("%d", cont);
 
     fclose(arq);
 

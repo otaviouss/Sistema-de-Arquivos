@@ -14,7 +14,8 @@ void criarDiretorioInicial(INode* inode, char* nome) {
     inode->tipo = 0;
 
     // Definindo o nome do novo diretório
-    inode->nome = nome;
+    inode->nome = (char*) calloc(100, sizeof(char));
+    strcpy(inode->nome, nome);
 
     // Inicializando lista de arquivos do diretório
     FLVazia(inode);
@@ -54,7 +55,8 @@ void criarDiretorio(INode* inode, char* nome) {
     in.tipo = 0;
 
     // Definindo o nome do novo diretório
-    in.nome = nome;
+    in.nome = (char*) calloc(100, sizeof(char));
+    strcpy(in.nome, nome);
 
     // Inicializando lista de arquivos do diretório
     FLVazia(&in);
@@ -162,7 +164,8 @@ void criarArquivo(INode* inode, char* nome, char* conteudo){
     in.tipo = 1;
 
     // Definindo o nome do novo arquivo
-    in.nome = nome;
+    in.nome = (char*) calloc(100, sizeof(char));
+    strcpy(in.nome, nome);
 
     // Definindo lista de arquivos como vazia (pois um arqquivo não utiliza)
     FLVazia(&in);
@@ -180,7 +183,8 @@ void criarArquivo(INode* inode, char* nome, char* conteudo){
                 timeinfo->tm_hour, timeinfo->tm_min, timeinfo->tm_sec);
     
     // Definindo conteúdo do arquivo
-    in.conteudo = conteudo;
+    in.conteudo = (char*) calloc(10000, sizeof(char));
+    strcpy(in.conteudo, conteudo);
 
     // 0, pois representa quantidade de items em um diretório (Não é o caso)
     in.quantidade = 0;
